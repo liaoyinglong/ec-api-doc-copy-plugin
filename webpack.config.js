@@ -3,12 +3,24 @@ const webpack = require('webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const { name, version } = require('./package.json');
+// const banner = `
+//   ${name}.js v${version}
+//   (c) 2018 - 2018 liaoyinglong
+
+// `;
 const banner = `
-  ${name}.js v${version}
-  (c) 2018 - 2018 liaoyinglong
+// ==UserScript==
+// @name         ${name}
+// @namespace    http://tampermonkey.net/
+// @version      ${version}
+// @description  only support chrome
+// @author       liaoyinglong
+// @match        http://192.168.9.105:8888/*
+// ==/UserScript==
+
+/* jshint ignore:start */
 
 `;
-
 const baseConfig = {
   entry: './src/index.ts',
   resolve: {
@@ -25,6 +37,7 @@ const baseConfig = {
   plugins: [
     new webpack.BannerPlugin({
       banner,
+      raw: true,
       entryOnly: true
     })
   ]
