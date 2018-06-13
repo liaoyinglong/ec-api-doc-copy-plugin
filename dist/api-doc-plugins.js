@@ -2,7 +2,7 @@
 // ==UserScript==
 // @name         api-doc-plugins
 // @namespace    http://tampermonkey.net/
-// @version      1.0.0
+// @version      1.1.0
 // @description  only support chrome
 // @author       liaoyinglong
 // @match        http://192.168.9.105:8888/*
