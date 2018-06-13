@@ -9,7 +9,7 @@ class ApiDocPlugins {
   clipboard: any;
   reqParamsList: string[] = [];
   resParamsList: string[] = [];
-
+  resParamsDescList: string[] = [];
   selectorsMap: ISelectorMap = {
     REQ_DEFAULT_VALUE_SELECTOR: `${prefixReq} li:nth-child(4)`,
     REQ_DESCRIPTION_SELECTOR: `${prefixReq} li:last-child`,
@@ -19,6 +19,7 @@ class ApiDocPlugins {
     RES_DESCRIPTION_SELECTOR: `${prefixRes} li:last-child`,
     RES_PARAMS_SELECTOR: `${prefixRes} li:first-child`,
     RES_PARAMS_NAME_SELECTOR: '.div-table-header li:first-child',
+    RES_PARAMS_DESC_SELECTOR: '.div-table-header li:last-child',
 
     WRAPPER_TABLE_SELECTOR: '#api-details .div-table'
   };
@@ -28,6 +29,8 @@ class ApiDocPlugins {
     this.setRowButton();
     this.setTableHeadCopyButton(this.Els.reqParamsNameEl, this.reqParamsList.join(''));
     this.setTableHeadCopyButton(this.Els.resParamsNameEl, this.resParamsList.join(''));
+    this.setTableHeadCopyButton(this.Els.resParamsDescEl, this.resParamsDescList.join(''));
+
     this.clipboard = new ClipboardJS('.copy-mark');
   }
 
@@ -48,15 +51,20 @@ class ApiDocPlugins {
           el.innerHTML = '';
           el.appendChild(button);
         }
-
         if (els === reqParamsEls) {
-          this.reqParamsList.push(oldInnerHTML.replace('复制', '').trim() + '\n');
+          this.pushToList(this.reqParamsList, oldInnerHTML);
         }
         if (els === resParamsEls) {
-          this.resParamsList.push(oldInnerHTML.replace('复制', '').trim() + '\n');
+          this.pushToList(this.resParamsList, oldInnerHTML);
+        }
+        if (els === resDescriptionELs) {
+          this.pushToList(this.resParamsDescList, oldInnerHTML);
         }
       });
     });
+  }
+  pushToList(list: string[], str: string) {
+    list.push(str.replace('复制', '').trim() + '\n');
   }
   setTableHeadCopyButton(el: Element, text: string) {
     const oldInnerHTML = (el as HTMLElement).innerText.replace('复制', '').trim();
@@ -70,6 +78,7 @@ class ApiDocPlugins {
     this.Els = null;
     this.reqParamsList = [];
     this.resParamsList = [];
+    this.resParamsDescList = [];
   }
 }
 

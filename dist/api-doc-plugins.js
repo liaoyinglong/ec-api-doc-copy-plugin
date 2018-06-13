@@ -110,6 +110,7 @@ var getElements = /** @class */ (function () {
         this.resParamsEls = this.resTableEl.querySelectorAll(opts.RES_PARAMS_SELECTOR);
         this.resDescriptionELs = this.resTableEl.querySelectorAll(opts.RES_DESCRIPTION_SELECTOR);
         this.resParamsNameEl = this.resTableEl.querySelector(opts.RES_PARAMS_NAME_SELECTOR);
+        this.resParamsDescEl = this.resTableEl.querySelector(opts.RES_PARAMS_DESC_SELECTOR);
         this.resTitleEl = this.resTableEl.previousElementSibling;
     }
     return getElements;
@@ -154,6 +155,7 @@ var src_ApiDocPlugins = /** @class */ (function () {
     function ApiDocPlugins() {
         this.reqParamsList = [];
         this.resParamsList = [];
+        this.resParamsDescList = [];
         this.selectorsMap = {
             REQ_DEFAULT_VALUE_SELECTOR: prefixReq + " li:nth-child(4)",
             REQ_DESCRIPTION_SELECTOR: prefixReq + " li:last-child",
@@ -162,12 +164,14 @@ var src_ApiDocPlugins = /** @class */ (function () {
             RES_DESCRIPTION_SELECTOR: prefixRes + " li:last-child",
             RES_PARAMS_SELECTOR: prefixRes + " li:first-child",
             RES_PARAMS_NAME_SELECTOR: '.div-table-header li:first-child',
+            RES_PARAMS_DESC_SELECTOR: '.div-table-header li:last-child',
             WRAPPER_TABLE_SELECTOR: '#api-details .div-table'
         };
         this.Els = new get_element(this.selectorsMap);
         this.setRowButton();
         this.setTableHeadCopyButton(this.Els.reqParamsNameEl, this.reqParamsList.join(''));
         this.setTableHeadCopyButton(this.Els.resParamsNameEl, this.resParamsList.join(''));
+        this.setTableHeadCopyButton(this.Els.resParamsDescEl, this.resParamsDescList.join(''));
         this.clipboard = new ClipboardJS('.copy-mark');
     }
     ApiDocPlugins.prototype.setRowButton = function () {
@@ -185,13 +189,19 @@ var src_ApiDocPlugins = /** @class */ (function () {
                     el.appendChild(button);
                 }
                 if (els === reqParamsEls) {
-                    _this.reqParamsList.push(oldInnerHTML.replace('复制', '').trim() + '\n');
+                    _this.pushToList(_this.reqParamsList, oldInnerHTML);
                 }
                 if (els === resParamsEls) {
-                    _this.resParamsList.push(oldInnerHTML.replace('复制', '').trim() + '\n');
+                    _this.pushToList(_this.resParamsList, oldInnerHTML);
+                }
+                if (els === resDescriptionELs) {
+                    _this.pushToList(_this.resParamsDescList, oldInnerHTML);
                 }
             });
         });
+    };
+    ApiDocPlugins.prototype.pushToList = function (list, str) {
+        list.push(str.replace('复制', '').trim() + '\n');
     };
     ApiDocPlugins.prototype.setTableHeadCopyButton = function (el, text) {
         var oldInnerHTML = el.innerText.replace('复制', '').trim();
@@ -203,6 +213,7 @@ var src_ApiDocPlugins = /** @class */ (function () {
         this.Els = null;
         this.reqParamsList = [];
         this.resParamsList = [];
+        this.resParamsDescList = [];
     };
     return ApiDocPlugins;
 }());

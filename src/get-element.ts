@@ -13,6 +13,7 @@ export interface ISelectorMap {
   RES_PARAMS_SELECTOR: string;
   RES_DESCRIPTION_SELECTOR: string;
   RES_PARAMS_NAME_SELECTOR: string;
+  RES_PARAMS_DESC_SELECTOR: string;
   WRAPPER_TABLE_SELECTOR: string;
 }
 
@@ -35,6 +36,10 @@ export default class getElements {
    *响应数据 表头 元素
    */
   resParamsNameEl: Element;
+  /**
+   *响应数据 描述 表头 元素
+   */
+  resParamsDescEl: Element;
   /**
    * 请求参数
    */
@@ -71,6 +76,7 @@ export default class getElements {
     this.resParamsEls = this.resTableEl.querySelectorAll(opts.RES_PARAMS_SELECTOR);
     this.resDescriptionELs = this.resTableEl.querySelectorAll(opts.RES_DESCRIPTION_SELECTOR);
     this.resParamsNameEl = this.resTableEl.querySelector(opts.RES_PARAMS_NAME_SELECTOR)!;
+    this.resParamsDescEl = this.resTableEl.querySelector(opts.RES_PARAMS_DESC_SELECTOR)!;
     this.resTitleEl = this.resTableEl.previousElementSibling!;
   }
 }
